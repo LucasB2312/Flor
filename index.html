@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosa Crescendo sob o Céu Estrelado</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="night-sky">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+        <div class="shooting-star"></div>
+        <div class="moon"></div>
+    </div>
+
+    <div class="scene">
+        <div class="ground"></div>
+        <div class="rose">
+            <div class="stem"></div>
+            <div class="leaf leaf-left"></div>
+            <div class="leaf leaf-right"></div>
+            <div class="flower">
+                <div class="flower-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const flower = document.querySelector('.flower');
+            const center = document.querySelector('.flower-center');
+
+            // Remove o centro para reanexá-lo no final, ficando por cima das pétalas
+            center.remove();
+
+            // Configuração das camadas de pétalas (de fora para dentro)
+            const layers = [
+                { numPetals: 24, w: 26, h: 95, radius: 10, color: '#ffffff', delay: 3.5, zIndex: 1 },
+                { numPetals: 18, w: 22, h: 75, radius: 8, color: '#f9f9f9', delay: 3.9, zIndex: 2 },
+                { numPetals: 14, w: 18, h: 55, radius: 5, color: '#eeeeee', delay: 4.3, zIndex: 3 },
+                { numPetals: 8, w: 16, h: 35, radius: 2, color: '#e0e0e0', delay: 4.7, zIndex: 4 }
+            ];
+
+            layers.forEach((layer) => {
+                for (let i = 0; i < layer.numPetals; i++) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'absolute';
+                    wrapper.style.top = '50%';
+                    wrapper.style.left = '50%';
+                    wrapper.style.zIndex = layer.zIndex;
+
+                    // Distribuição circular das pétalas e deslocamento do centro
+                    const angle = (360 / layer.numPetals) * i;
+                    wrapper.style.transform = `rotate(${angle}deg) translateY(-${layer.radius}px)`;
+
+                    const petal = document.createElement('div');
+                    // Estilos da pétala baseados em um design realista
+                    petal.style.width = `${layer.w}px`;
+                    petal.style.height = `${layer.h}px`;
+                    petal.style.marginLeft = `-${layer.w / 2}px`;
+                    petal.style.bottom = '0';
+                    petal.style.position = 'absolute';
+                    petal.style.transformOrigin = 'bottom center';
+
+                    // Sombreamento orgânico de cores
+                    petal.style.background = `linear-gradient(to top, #d0d0d0, ${layer.color} 50%, #ffffff)`;
+                    petal.style.borderRadius = '50% 50% 20% 20%';
+                    petal.style.boxShadow = '0 2px 4px rgba(0,0,0,0.15), inset 0 -2px 5px rgba(0,0,0,0.1)';
+
+                    // Animação e Delay orgânico
+                    petal.style.transform = 'scale(0) rotateX(-90deg)';
+                    petal.style.animation = `bloomJsPetal 2.5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards`;
+                    const randomDelayOffset = Math.random() * 0.4;
+                    petal.style.animationDelay = `${layer.delay + randomDelayOffset}s`;
+
+                    wrapper.appendChild(petal);
+                    flower.appendChild(wrapper);
+                }
+            });
+
+            flower.appendChild(center);
+        });
+    </script>
+</body>
+
+</html>
